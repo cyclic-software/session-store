@@ -3,9 +3,9 @@
 // defaults
 const DEFAULT_TABLE_NAME = 'sessions'
 const DEFAULT_TABLE_CREATE = true
-const DEFAULT_HASH_KEY = 'sessionId'
-const DEFAULT_SORT_KEY = undefined
-const DEFAULT_HASH_PREFIX = 'sess:'
+const DEFAULT_HASH_KEY = 'pk'
+const DEFAULT_SORT_KEY = 'sk'
+const DEFAULT_HASH_PREFIX = 'sessions#'
 const DEFAULT_RCU = 5
 const DEFAULT_WCU = 5
 const DEFAULT_TTL = 86400000 // 1 day

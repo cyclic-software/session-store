@@ -1,4 +1,4 @@
-import { toSecondsEpoch } from '../lib/util';
+import { toSecondsEpoch } from '../src/util';
 
 describe('util', () => {
   it('should calculate the seconds epoch for a date', () => {

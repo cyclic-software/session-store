@@ -18,13 +18,15 @@
   },
   "homepage": "https://github.com/cyclic-software/cyclic-session#readme",
   "dependencies": {
+    "aws-sdk": "^2.1258.0",
     "express-session": "^1.17.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
     "babel-jest": "^29.3.1",
-    "babel-preset-flow": "^6.23.0",
-    "jest": "^29.3.1"
+    "jest": "^29.3.1",
+    "uuid": "^9.0.0"
   }
 }

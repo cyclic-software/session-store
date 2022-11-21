@@ -9,7 +9,7 @@ import {
   DEFAULT_TOUCH_INTERVAL,
   DEFAULT_KEEP_EXPIRED_POLICY,
   API_VERSION,
-} from '../lib/constants';
+} from '../src/constants';
 
 describe('constants', () => {
   it('should have all the constants', () => {

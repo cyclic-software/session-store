@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'; // eslint-disable-line
-import uuidv4 from 'uuid/v4';
-import DynamoDBStore from '../lib/DynamoDBStore';
-import { toSecondsEpoch } from '../lib/util';
-import { DEFAULT_TABLE_NAME, DEFAULT_TTL } from '../lib/constants';
+import { v4 as uuidv4 } from 'uuid';
+import DynamoDBStore from '../src/DynamoDBStore';
+import { toSecondsEpoch } from '../src/util';
+import { DEFAULT_TABLE_NAME, DEFAULT_TTL } from '../src/constants';
 
 const TEST_OPTIONS = {
   table: {
