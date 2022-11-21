@@ -1,24 +1,28 @@
 // @flow
 const { Store } = require('express-session')
-const AWS = require('aws-sdk'); // eslint-disable-line
+const {docClient} = require('./ddb_client')
+const { PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb")
+// const AWS = require('aws-sdk'); // eslint-disable-line
+// @flow
+
 const {
-  DEFAULT_TABLE_NAME,
-  DEFAULT_RCU,
-  DEFAULT_WCU,
-  DEFAULT_CALLBACK,
-  DEFAULT_HASH_KEY,
-  DEFAULT_HASH_PREFIX,
-  DEFAULT_TTL,
-  DEFAULT_TOUCH_INTERVAL,
-  DEFAULT_KEEP_EXPIRED_POLICY,
-  API_VERSION
-} = require('./constants')
-const { toSecondsEpoch, debug, isExpired } = require('./util')
+    DEFAULT_TABLE_NAME,
+    DEFAULT_CALLBACK,
+    DEFAULT_HASH_KEY,
+    DEFAULT_HASH_PREFIX,
+    DEFAULT_TTL,
+    DEFAULT_TOUCH_INTERVAL,
+    DEFAULT_KEEP_EXPIRED_POLICY,
+  } = require('./constants')
+  const { toSecondsEpoch, debug, isExpired } = require('./util')
+
+
+
 
 /**
  * Express.js session store for DynamoDB.
  */
-class DynamoDBStore extends Store {
+class CyclicSessionStore extends Store {
   /**
    * Constructor.
    * @param  {Object} options                Store
@@ -34,16 +38,8 @@ class DynamoDBStore extends Store {
     const dynamoConfig = options.dynamoConfig || {}
 
     // dynamodb client configuration
-    this.dynamoService = new AWS.DynamoDB({
-      ...dynamoConfig,
-      apiVersion: API_VERSION
-    })
-    this.documentClient = new AWS.DynamoDB.DocumentClient({
-      service: this.dynamoService
-    })
+    this.documentClient = docClient
 
-    // creates the table if necessary
-    this.createTableIfDontExists(callback)
   }
 
   /**
@@ -60,21 +56,15 @@ class DynamoDBStore extends Store {
 
     const {
       name = DEFAULT_TABLE_NAME,
-      create = DEFAULT_TABLE_CREATE,
       hashPrefix = DEFAULT_HASH_PREFIX,
       hashKey = DEFAULT_HASH_KEY,
       sortKey = DEFAULT_SORT_KEY,
-      readCapacityUnits = DEFAULT_RCU,
-      writeCapacityUnits = DEFAULT_WCU
     } = table
 
     this.tableName = name
-    this.tableCreate = create
     this.hashPrefix = hashPrefix
     this.hashKey = hashKey
     this.sortKey = sortKey
-    this.readCapacityUnits = Number(readCapacityUnits)
-    this.writeCapacityUnits = Number(writeCapacityUnits)
 
     this.touchInterval = touchInterval
     this.ttl = ttl
@@ -90,69 +80,6 @@ class DynamoDBStore extends Store {
     console.error(this)
   }
 
-  /**
-   * Checks if the sessions table already exists.
-   */
-  async isTableCreated () {
-    try {
-      // attempt to get details from a table
-      const table = await this.dynamoService
-        .describeTable({
-          TableName: this.tableName
-        })
-        .promise()
-      return true
-    } catch (tableNotFoundError) {
-      // Table does not exist
-      // There is no error code on AWS error that we could match
-      // so its safer to assume the error is because the table does not exist than
-      // trying to match the message that could change
-      return false
-    }
-  }
-
-  /**
-   * Creates the session table.
-   */
-  createTable () {
-    const params = {
-      TableName: this.tableName,
-      KeySchema: this.keySchema,
-      AttributeDefinitions: this.attributeDefinitions,
-      ProvisionedThroughput: {
-        ReadCapacityUnits: this.readCapacityUnits,
-        WriteCapacityUnits: this.writeCapacityUnits
-      }
-    }
-    return this.dynamoService.createTable(params).promise()
-  }
-
-  /**
-   * Creates the session table. Does nothing if it already exists.
-   * @param  {Function} callback Callback to be invoked at the end of the execution.
-   */
-  async createTableIfDontExists (callback) {
-    if (!this.tableCreate) {
-      debug('Config \'createTable\' specifies to not create table')
-      callback()
-      return
-    }
-    try {
-      const exists = await this.isTableCreated()
-
-      if (exists) {
-        debug(`Table ${this.tableName} already exists`)
-      } else {
-        debug(`Creating table ${this.tableName}...`)
-        await this.createTable()
-      }
-
-      callback()
-    } catch (createTableError) {
-      debug(`Error creating table ${this.tableName}`, createTableError)
-      callback(createTableError)
-    }
-  }
 
   /**
    * Stores a session.
@@ -177,8 +104,13 @@ class DynamoDBStore extends Store {
         }
       }
       debug(`Saving session '${sid}'`, sess)
-      this.documentClient.put(params, callback)
+      
+        this.documentClient.send(new PutCommand(params)).then(callback)
     } catch (err) {
+        
+        console.error('sadfsadfasdf')
+        console.error(err)
+
       debug('Error saving session', {
         sid,
         sess,
@@ -204,8 +136,9 @@ class DynamoDBStore extends Store {
         },
         ConsistentRead: true
       }
+      console.log(params)
 
-      const { Item: record } = await this.documentClient.get(params).promise()
+      const { Item: record } = await this.documentClient.send(new GetCommand(params))
 
       if (!record) {
         debug(`Session '${sid}' not found`)
@@ -237,7 +170,9 @@ class DynamoDBStore extends Store {
           [this.sortKey]: sessionId
         }
       }
-      await this.documentClient.delete(params).promise()
+      await this.documentClient.send(new DeleteCommand(
+        params
+      ))
       debug(`Destroyed session '${sid}'`)
       callback(null, null)
     } catch (err) {
@@ -275,7 +210,7 @@ class DynamoDBStore extends Store {
           ReturnValues: 'UPDATED_NEW'
         }
         debug(`Touching session '${sid}'`)
-        this.documentClient.update(params, callback)
+        this.documentClient.send(new UpdateCommand(params)).then(callback)
       } else {
         debug(`Skipping touch of session '${sid}'`)
         callback()
@@ -327,6 +262,5 @@ class DynamoDBStore extends Store {
   }
 }
 
-module.exports = {
-  DynamoDBStore
-}
+module.exports = CyclicSessionStore
+
