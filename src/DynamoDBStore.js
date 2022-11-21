@@ -91,9 +91,6 @@ class CyclicSessionStore extends Store {
     try {
       const sessionId = this.getSessionId(sid)
       const expires = this.getExpirationDate(sess)
-    //   if(sess.cookie?._expires){
-    //       sess.cookie._expires = sess.cookie._expires.toISOString()
-    //   }
       const params = {
         TableName: this.tableName,
         Item: {
@@ -106,8 +103,6 @@ class CyclicSessionStore extends Store {
           }
         }
       }
-      console.log(params)
-      console.log(params.Item.sess)
       debug(`Saving session '${sid}'`, sess)
       
         this.documentClient.send(new PutCommand(params)).then(callback)
