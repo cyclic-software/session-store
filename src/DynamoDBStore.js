@@ -170,7 +170,6 @@ class CyclicSessionStore extends Store {
           [this.sortKey]: sessionId
         }
       }
-    //   await this.documentClient.delete(params).promise()
       await this.documentClient.send(new DeleteCommand(
         params
       ))
