@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk'; // eslint-disable-line
+// import AWS from 'aws-sdk'; // eslint-disable-line
 import { v4 as uuidv4 } from 'uuid';
 import DynamoDBStore from '../src/DynamoDBStore';
 import { toSecondsEpoch } from '../src/util';
@@ -20,33 +20,33 @@ const TEST_OPTIONS = {
   touchInterval: 0,
 };
 
-const dynamoService = new AWS.DynamoDB(TEST_OPTIONS.dynamoConfig);
-const documentClient = new AWS.DynamoDB.DocumentClient({
-  service: dynamoService,
-});
+// const dynamoService = new AWS.DynamoDB(TEST_OPTIONS.dynamoConfig);
+// const documentClient = new AWS.DynamoDB.DocumentClient({
+//   service: dynamoService,
+// });
 
-beforeAll(async () => {
-  const params = {
-    TableName: TEST_OPTIONS.table.name,
-    KeySchema: [{ AttributeName: TEST_OPTIONS.table.hashKey, KeyType: 'HASH' }],
-    AttributeDefinitions: [{ AttributeName: TEST_OPTIONS.table.hashKey, AttributeType: 'S' }],
-    ProvisionedThroughput: {
-      ReadCapacityUnits: 5,
-      WriteCapacityUnits: 5,
-    },
-  };
+// beforeAll(async () => {
+//   const params = {
+//     TableName: TEST_OPTIONS.table.name,
+//     KeySchema: [{ AttributeName: TEST_OPTIONS.table.hashKey, KeyType: 'HASH' }],
+//     AttributeDefinitions: [{ AttributeName: TEST_OPTIONS.table.hashKey, AttributeType: 'S' }],
+//     ProvisionedThroughput: {
+//       ReadCapacityUnits: 5,
+//       WriteCapacityUnits: 5,
+//     },
+//   };
 
-  return dynamoService.createTable(params).promise();
-});
+//   return dynamoService.createTable(params).promise();
+// });
 
-afterAll(async () => {
-  const params = {
-    TableName: TEST_OPTIONS.table.name,
-  };
-  return dynamoService.deleteTable(params).promise();
-});
+// afterAll(async () => {
+//   const params = {
+//     TableName: TEST_OPTIONS.table.name,
+//   };
+//   return dynamoService.deleteTable(params).promise();
+// });
 
-describe('DynamoDBStore', () => {
+describe.skip('DynamoDBStore', () => {
   it('should create a store and a new table', () =>
     new Promise((resolve, reject) => {
       const options = {
