@@ -1,8 +1,8 @@
 {
-  "name": "cyclic-session",
+  "name": "@cyclic.sh/session-store",
   "version": "0.0.1",
   "description": "Express middleware that stores sessions in DynamoDB tables for Cyclic apps.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
@@ -10,8 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/cyclic-software/cyclic-session.git"
   },
-  "keywords": [],
-  "author": "Kam Lasater <kam.lasater@cyclic.sh>",
+  "keywords": ["express-sessions","session-store","dynamodb","cyclic.sh","dynamodb-store"],
+  "contributors": [
+    "Kam Lasater <kam.lasater@cyclic.sh>",
+    "Michael Korostelev <michael.korostelev@cyclic.sh>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cyclic-software/cyclic-session/issues"
@@ -29,5 +32,8 @@
     "babel-jest": "^29.3.1",
     "jest": "^29.3.1",
     "uuid": "^9.0.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }
