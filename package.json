@@ -1,6 +1,6 @@
 {
   "name": "@cyclic.sh/session-store",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Express middleware that stores sessions in DynamoDB tables for Cyclic apps.",
   "main": "src/index.js",
   "scripts": {
