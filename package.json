@@ -18,6 +18,10 @@
     "cyclic.sh",
     "dynamodb-store"
   ],
+  "author": {
+    "name": "Cyclic Software",
+    "url": "https://www.cyclic.sh"
+  },
   "contributors": [
     "Kam Lasater <kam.lasater@cyclic.sh>",
     "Michael Korostelev <michael.korostelev@cyclic.sh>"
