@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cyclic-software/cyclic-session.git"
+    "url": "git+https://github.com/cyclic-software/session-store.git"
   },
   "keywords": [
     "express-sessions",
@@ -28,9 +28,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cyclic-software/cyclic-session/issues"
+    "url": "https://github.com/cyclic-software/session-store/issues"
   },
-  "homepage": "https://github.com/cyclic-software/cyclic-session#readme",
+  "homepage": "https://github.com/cyclic-software/session-store#readme",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.82.0",
     "@aws-sdk/lib-dynamodb": "3.82.0",
