@@ -17,5 +17,5 @@ jobs:
       - run: npm run test
       - run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
