@@ -48,5 +48,8 @@
   },
   "directories": {
     "test": "test"
+  },
+  "release": {
+    "branches": ["main"]
   }
 }
