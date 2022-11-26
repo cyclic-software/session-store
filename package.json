@@ -4,7 +4,8 @@
   "description": "Express middleware that stores sessions in DynamoDB tables for Cyclic apps.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -42,7 +43,10 @@
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "babel-jest": "^29.3.1",
+    "husky": "^8.0.2",
     "jest": "^29.3.1",
     "semantic-release": "^19.0.5",
     "uuid": "^9.0.0"
