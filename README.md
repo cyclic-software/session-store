@@ -19,14 +19,17 @@ This package allows you to use the Cyclic DynamoDB table as an express.js sessio
 ## Example usage
 
 ```js
+const express = require("express");
+const session = require("express-session");
 const { CyclicSessionStore } = require("@cyclic.sh/session-store");
+
+const app = express();
 
 const options = {
   table: {
     name: process.env.CYCLIC_DB,
   }
 };
-
 
 app.use(
   session({
