@@ -1,6 +1,6 @@
 
-const { DynamoDBStore } = require('./DynamoDBStore.js')
+const { CyclicSessionStore } = require('./CyclicSessionStore.js')
 
 module.exports = {
-  DynamoDBStore
+  CyclicSessionStore
 }

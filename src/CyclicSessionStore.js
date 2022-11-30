@@ -6,7 +6,6 @@ const { PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb
 // @flow
 
 const {
-    DEFAULT_TABLE_NAME,
     DEFAULT_CALLBACK,
     DEFAULT_HASH_KEY,
     DEFAULT_HASH_PREFIX,
@@ -26,9 +25,8 @@ class CyclicSessionStore extends Store {
   /**
    * Constructor.
    * @param  {Object} options                Store
-   * @param  {Function} callback Optional callback for table creation.
    */
-  constructor (options = {}, callback = DEFAULT_CALLBACK) {
+  constructor (options = {}) {
     super()
     debug('Initializing store', options)
     // debug('AWS sdk: ', AWS);
@@ -104,10 +102,10 @@ class CyclicSessionStore extends Store {
         }
       }
       debug(`Saving session '${sid}'`, sess)
-      
+
         this.documentClient.send(new PutCommand(params)).then(callback)
     } catch (err) {
-        
+
         console.error('sadfsadfasdf')
         console.error(err)
 

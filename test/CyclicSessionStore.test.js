@@ -1,6 +1,6 @@
 // import AWS from 'aws-sdk'; // eslint-disable-line
 import { v4 as uuidv4 } from 'uuid';
-import DynamoDBStore from '../src/DynamoDBStore';
+import CyclicSessionStore from '../src/CyclicSessionStore';
 import { toSecondsEpoch } from '../src/util';
 import { DEFAULT_TABLE_NAME, DEFAULT_TTL } from '../src/constants';
 
@@ -46,7 +46,7 @@ const TEST_OPTIONS = {
 //   return dynamoService.deleteTable(params).promise();
 // });
 
-describe.skip('DynamoDBStore', () => {
+describe.skip('CyclicSessionStore', () => {
   it('should create a store and a new table', () =>
     new Promise((resolve, reject) => {
       const options = {
@@ -57,7 +57,7 @@ describe.skip('DynamoDBStore', () => {
         },
         dynamoConfig: TEST_OPTIONS.dynamoConfig,
       };
-      const store = new DynamoDBStore(options, (err) => {
+      const store = new CyclicSessionStore(options, (err) => {
         try {
           expect(err).toBeUndefined();
           resolve();
@@ -75,7 +75,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should create a store using an existing table', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
         else resolve();
       });
@@ -85,7 +85,7 @@ describe.skip('DynamoDBStore', () => {
   it('should create a store with default table values', () =>
     new Promise((resolve, reject) => {
       const options = { dynamoConfig: TEST_OPTIONS.dynamoConfig };
-      const store = new DynamoDBStore(options, (err) => {
+      const store = new CyclicSessionStore(options, (err) => {
         try {
           expect(err).toBeUndefined();
           resolve();
@@ -103,7 +103,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should create session with default ttl', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(
+      const store = new CyclicSessionStore(
         {
           ...TEST_OPTIONS,
           ttl: undefined,
@@ -156,7 +156,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should create session using the cookie maxAge', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -212,7 +212,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should handle errors creating sessions', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -228,7 +228,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should update a session', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = 'abcde';
@@ -258,7 +258,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should get an existing session', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -284,7 +284,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should handle errors getting sessions', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       store.documentClient = null;
@@ -300,7 +300,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should receive null for missing sessions', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       store.get(uuidv4(), (err, sess) => {
@@ -318,7 +318,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should return null for expired sessions and keep the record', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(
+      const store = new CyclicSessionStore(
         {
           ...TEST_OPTIONS,
           keepExpired: true,
@@ -365,7 +365,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should return null for expired sessions and destroy the record', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -406,7 +406,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should destroy a session', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -436,7 +436,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should handle errors destroying sessions', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       store.documentClient = null;
@@ -452,7 +452,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should touch an existing session', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -506,7 +506,7 @@ describe.skip('DynamoDBStore', () => {
         ...TEST_OPTIONS,
         touchInterval: 30000,
       };
-      const store = new DynamoDBStore(options, (err) => {
+      const store = new CyclicSessionStore(options, (err) => {
         if (err) reject(err);
       });
       const sessionId = uuidv4();
@@ -554,7 +554,7 @@ describe.skip('DynamoDBStore', () => {
 
   it('should handle errors touching sessions', () =>
     new Promise((resolve, reject) => {
-      const store = new DynamoDBStore(TEST_OPTIONS, (err) => {
+      const store = new CyclicSessionStore(TEST_OPTIONS, (err) => {
         if (err) reject(err);
       });
       store.touch(null, null, (err) => {
@@ -570,7 +570,7 @@ describe.skip('DynamoDBStore', () => {
   it('should handle errors creating the session table', () =>
     new Promise((resolve, reject) => {
       // eslint-disable-next-line
-      new DynamoDBStore(
+      new CyclicSessionStore(
         {
           ...TEST_OPTIONS,
           table: {
