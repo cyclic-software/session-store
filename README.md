@@ -1,10 +1,10 @@
-# @cyclic.sh/session-store [![npm (scoped)](https://img.shields.io/npm/v/@cyclic.sh/session-store)](https://www.npmjs.com/package/@cyclic.sh/session-store)
+# @cyclic.sh/session-store
 
 Express middleware that stores sessions in DynamoDB tables for Cyclic apps.
 
 [![Discord](https://img.shields.io/discord/895292239633338380)](https://discord.cyclic.sh/support) [![CI](https://github.com/cyclic-software/session-store/actions/workflows/run_tests.yaml/badge.svg)](https://github.com/cyclic-software/session-store/actions/workflows/run_tests.yaml) [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 
- ![node-current (scoped)](https://img.shields.io/node/v/@cyclic.sh/session-store) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@cyclic.sh/session-store)
+[![npm (scoped)](https://img.shields.io/npm/v/@cyclic.sh/session-store)](https://www.npmjs.com/package/@cyclic.sh/session-store) ![node-current (scoped)](https://img.shields.io/node/v/@cyclic.sh/session-store) ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@cyclic.sh/session-store)
 
 Sessions to allow the server to maintain the state across many page requests and keep users logged in.
 
