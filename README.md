@@ -24,7 +24,7 @@ const { CyclicSessionStore } = require("@cyclic.sh/session-store");
 const options = {
   table: {
     name: process.env.CYCLIC_DB,
-  },
+  }
 };
 
 
@@ -36,7 +36,7 @@ app.use(
 );
 ```
 
-## Using the package on local
+## Using the package locally
 Copy the temporary credentials from the Cyclic dashboard and set them in the shell environment where your code will be running.
 
 The following environment are required for use **on local**. 
