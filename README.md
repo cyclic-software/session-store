@@ -66,9 +66,9 @@ These are automatically available when apps are deployed and must not be configu
 
 `keepExpired` - (optional) (defaults to false). When set to false informs the store to remove from DynamoDB expired session rows when they are requested. When set to true the store will just ignores the expired rows and leave them in DynamoDB. This property does not guarantee that all expired sessions will be removed from DynamoDB, only the ones that receive requests after they expire.
 
-`touchInterval` - defines how often requests should update the time to live of a session. This property is important to avoid unnecessary table writes. By default the interval allows express to touch a same session every 30 seconds. touchInterval = 0 will cause a touch on every request.
+`touchInterval` - (defaults to 30 seconds) defines how often requests should update the time to live of a session. This property is important to avoid unnecessary table writes. By default the interval allows express to touch a same session every 30 seconds. touchInterval = 0 will cause a touch on every request.
 
-`ttl` - The time to live of the sessions can be controlled:
+`ttl` - (defaults to 1 day) The time to live of the sessions can be controlled:
 - **Using cookies with the cookie.maxAge property:**
 If this property is set, the session cookie will be created with a fixed 'expires' attribute. After the specified time the session cookie will expire and a new session will be created even if the user is still active. To avoid that you need update the 'expires' attribute of the session cookie on every request by setting the rolling session property to true. This way every request will have a set-cookie response with the updated 'expires' attribute.
 - **Using the TTL property (recommended)**
