@@ -2,6 +2,7 @@
 
 // defaults
 const DEFAULT_HASH_KEY = 'pk'
+const DEFAULT_HASH_PREFIX = 'session-store#'
 const DEFAULT_SORT_KEY = 'sk'
 const DEFAULT_TTL = 86400000 // 1 day
 const DEFAULT_TOUCH_INTERVAL = 30000 // 30 seconds
@@ -12,6 +13,7 @@ const DEFAULT_KEEP_EXPIRED_POLICY = false
 
 module.exports = {
   DEFAULT_HASH_KEY,
+  DEFAULT_HASH_PREFIX,
   DEFAULT_SORT_KEY,
   DEFAULT_TTL,
   DEFAULT_TOUCH_INTERVAL,

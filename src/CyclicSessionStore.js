@@ -6,9 +6,9 @@ const { PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb
 // @flow
 
 const {
-    DEFAULT_CALLBACK,
     DEFAULT_HASH_KEY,
     DEFAULT_HASH_PREFIX,
+    DEFAULT_SORT_KEY,
     DEFAULT_TTL,
     DEFAULT_TOUCH_INTERVAL,
     DEFAULT_KEEP_EXPIRED_POLICY,
