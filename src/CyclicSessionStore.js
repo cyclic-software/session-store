@@ -260,5 +260,7 @@ class CyclicSessionStore extends Store {
   }
 }
 
-module.exports = CyclicSessionStore
+module.exports = {
+  CyclicSessionStore
+}
 
