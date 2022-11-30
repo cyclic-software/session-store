@@ -21,25 +21,17 @@ This package allows you to use the Cyclic DynamoDB table as an express.js sessio
 ```js
 const { CyclicSessionStore } = require("@cyclic.sh/session-store");
 
-const dynamoOpts = {
+const options = {
   table: {
     name: process.env.CYCLIC_DB,
   },
-  keepExpired: false,
-  touchInterval: 30000, // milliseconds
-  ttl: 600000 // milliseconds
 };
 
-app.set("trust-proxy", 1);
+
 app.use(
   session({
-    store: new CyclicSessionStore(dynamoOpts),
-    secret: process.env.SESSION_SECRET || "THIS-IS-NOT-A-SECRET",
-    cookie: {
-      secure: "auto", // (process.env.NODE_ENV != 'development'),
-      maxAge: oneDayMs,
-    },
-    // unset: "destroy"
+    store: new CyclicSessionStore(options),
+    ...
   })
 );
 ```
@@ -59,12 +51,36 @@ These are automatically available when apps are deployed and must not be configu
 
 
 ## Options
+
+```
+{
+  table: {
+    name: process.env.CYCLIC_DB,
+  },
+  keepExpired: false, 
+  touchInterval: 30000, // milliseconds (30 seconds)
+  ttl: 86400000 // milliseconds (1 day)
+};
+```
 > This store implements the [touch](https://github.com/expressjs/session#storetouchsid-session-callback) method to allow express-session configurations to use [resave](https://github.com/expressjs/session#resave): false.
 
-`keepExpired` property is optional (defaults to false). When set to false informs the store to remove from DynamoDB expired session rows when they are requested. When set to true the store will just ignores the expired rows and leave them in DynamoDB. This property does not guarantee that all expired sessions will be removed from DynamoDB, only the ones that receive requests after they expire.
+`keepExpired` - (optional) (defaults to false). When set to false informs the store to remove from DynamoDB expired session rows when they are requested. When set to true the store will just ignores the expired rows and leave them in DynamoDB. This property does not guarantee that all expired sessions will be removed from DynamoDB, only the ones that receive requests after they expire.
 
-The touchInterval property defines how ofter requests should update the time to live of a session. This property is important to avoid unnecessary table writes. By default the interval allows express to touch a same session every 30 seconds. touchInterval = 0 will cause a touch on every request.
+`touchInterval` - defines how often requests should update the time to live of a session. This property is important to avoid unnecessary table writes. By default the interval allows express to touch a same session every 30 seconds. touchInterval = 0 will cause a touch on every request.
 
+`ttl` - The time to live of the sessions can be controlled:
+- **Using cookies with the cookie.maxAge property:**
+If this property is set, the session cookie will be created with a fixed 'expires' attribute. After the specified time the session cookie will expire and a new session will be created even if the user is still active. To avoid that you need update the 'expires' attribute of the session cookie on every request by setting the rolling session property to true. This way every request will have a set-cookie response with the updated 'expires' attribute.
+- **Using the TTL property (recommended)**
+Using the ttl property implemented by this store the session time to live will be controlled by the server. The time to live will be refreshed based on the touchInterval property without the need to update cookies.
 
+If both cookie.maxAge and ttl are informed, ttl takes precedence.
 
-This package is adapted from: https://www.npmjs.com/package/dynamodb-store
+`table.name` - the name of the DynamoDB table the store will use. This is available on a Cyclic app's dashboard in the Database/Storage tab.
+
+`table.hashKey` - (defaults to `pk`) The hash key of primary index of the DynamoDB table. In Cyclic apps, the table schema is pre-defined and this should be kept as default. 
+
+`table.sortKey` - (defaults to `sk`) The sort key of primary index of the DynamoDB table. In Cyclic apps, the table schema is pre-defined and this should be kept as default. 
+
+--------------
+This package is adapted to be compatible with composite key tables using aws-sdk v3 from: https://www.npmjs.com/package/dynamodb-store
