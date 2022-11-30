@@ -29,6 +29,9 @@
     "Mike Korostelev (https://github.com/korostelevm)",
     "Kam Lasater (https://github.com/seekayel)"
   ],
+  "engines": {
+    "node": ">=14.20.0"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cyclic-software/session-store/issues"
