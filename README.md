@@ -14,29 +14,20 @@ Express middleware that stores sessions in DynamoDB tables for Cyclic apps. Adap
 `npm install @cyclic.sh/session-store`
 
 ```js
-const {DynamoDBStore} = require('@cyclic.sh/session-store')
+const {CyclicSessionStore} = require('@cyclic.sh/session-store')
 
 const dynamoOpts = {
   table: {
     name: process.env.CYCLIC_DB,
-    hashKey: 'pk',
-    hashPrefix: 'sid_',
-    sortKey: 'sk',
-    create: false
   },
-  // dynamoConfig: {
-  //   endpoint: process.env.AWS_DYNAMO_ENDPOINT,
-  // },
   keepExpired: false,
   touchInterval: oneHourMs,
   ttl: oneDayMs
 }
 
-// console.log(typeof DynamoDBStore)
-
 app.set('trust-proxy', 1)
 app.use(session({
-  store: new DynamoDBStore(dynamoOpts),
+  store: new CyclicSessionStore(dynamoOpts),
   secret: process.env.SESSION_SECRET || 'THIS-IS-NOT-A-SECRET',
   resave: false,
   saveUninitialized: false,
