@@ -75,9 +75,7 @@ class CyclicSessionStore extends Store {
       this.attributeDefinitions.push({ AttributeName: this.sortKey, AttributeType: 'S' })
     }
 
-    if (process.env.DYNAMODB_STORE_DEBUG) {
-      console.error(this)
-    }
+	debug('optionsToInstance dump', this);
   }
 
 
@@ -132,9 +130,7 @@ class CyclicSessionStore extends Store {
         },
         ConsistentRead: true
       }
-      if (process.env.DYNAMODB_STORE_DEBUG) {
-        console.log(params)
-      }
+	  debug('dynamodb session params', params);
 
       const { Item: record } = await this.documentClient.send(new GetCommand(params))
 
