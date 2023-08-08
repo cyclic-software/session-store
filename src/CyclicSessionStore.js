@@ -75,7 +75,7 @@ class CyclicSessionStore extends Store {
       this.attributeDefinitions.push({ AttributeName: this.sortKey, AttributeType: 'S' })
     }
 
-    console.error(this)
+	debug('optionsToInstance dump', this);
   }
 
 
@@ -105,10 +105,6 @@ class CyclicSessionStore extends Store {
 
         this.documentClient.send(new PutCommand(params)).then(callback)
     } catch (err) {
-
-        console.error('sadfsadfasdf')
-        console.error(err)
-
       debug('Error saving session', {
         sid,
         sess,
@@ -134,7 +130,7 @@ class CyclicSessionStore extends Store {
         },
         ConsistentRead: true
       }
-      console.log(params)
+	  debug('dynamodb session params', params);
 
       const { Item: record } = await this.documentClient.send(new GetCommand(params))
 
