@@ -1,7 +1,7 @@
 // @flow
 const { Store } = require('express-session')
 const {docClient} = require('./ddb_client')
-const { PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb")
+const { PutCommand, GetCommand, DeleteCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb")
 // const AWS = require('aws-sdk'); // eslint-disable-line
 // @flow
 
